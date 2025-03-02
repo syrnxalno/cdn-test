@@ -1,0 +1,101 @@
+/* Ensure the entire parent page is centered */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #242424; /* Light grey background */
+  font-family: Arial, sans-serif;
+}
+
+/* Center everything inside the parent container */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Card Style */
+.card {
+  background: rgb(224, 237, 246);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+/* Heading */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #0056b3;
+}
+
+/* Input Field */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-field {
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  outline: none;
+  width: 250px;
+  align-items: center;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+}
+
+/* Button */
+.btn {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 272px;
+  align-items: center;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+/* Success Message */
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Iframe */
+.iframe {
+  width: 100%;
+  height: 250px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+
+.logo {
+  width: 170px;  /* Adjust width as needed */
+  height: auto;  /* Maintain aspect ratio */
+  margin-bottom: 20px; /* Space below logo */
+}
