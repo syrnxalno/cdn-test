@@ -1,43 +1,55 @@
 import { useState, useRef, useEffect } from "react";
-import "./App.css"; // Ensure you have this CSS file
+import "./App.css";
 import logo from '../src/assets/logo.png';
 
 function App() {
   const iframeRef = useRef(null);
   const [code, setCode] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [parentMessage, setParentMessage] = useState("Hi User"); // Default message
 
-  // Load external CDN script when component mounts
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = `https://cdn.jsdelivr.net/gh/syrnxalno/cdn-script-hosting@main/cdn-script1.js`
-   //script.src = `https://raw.githubusercontent.com/syrnxalno/cdn-script-hosting/main/cdn-script.js?v=${Date.now()}`;
+    script.src = `https://cdn.jsdelivr.net/gh/syrnxalno/cdn-script-hosting@main/cdn-script1.js`;
     script.async = true;
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script); // Cleanup on unmount
+      document.body.removeChild(script);
     };
   }, []);
 
-  // Function to send data to iframe
+  const handleLogin = () => {
+    if (code.length === 6) {
+      setAuthenticated(true);
+      console.log("User authenticated!");
+    } else {
+      alert("Enter a valid 6-digit code!");
+    }
+  };
+
+  // Handle messages from iframe
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin !== "http://localhost:5174") return; // Validate origin
+
+      if (event.data.type === "REQUEST_DATA") {
+        console.log("Parent received data request from iframe");
+        sendMessageToIframe();
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   const sendMessageToIframe = () => {
     if (iframeRef.current) {
       const iframeOrigin = "http://localhost:5174";
       iframeRef.current.contentWindow.postMessage(
-        { type: "AUTH_SUCCESS", message: "User authenticated!" },
+        { type: "DATA_RESPONSE", message: parentMessage },
         iframeOrigin
       );
-    }
-  };
-
-  // Function to handle login
-  const handleLogin = () => {
-    if (code.length === 6) {
-      setAuthenticated(true);
-      sendMessageToIframe();
-    } else {
-      alert("Enter a valid 6-digit code!");
     }
   };
 
@@ -45,6 +57,9 @@ function App() {
     <div className="container">
       <div className="card">
         <img src={logo} alt="Logo" className="logo" />
+
+        {/* Display parent message */}
+        <p className="success-message">{parentMessage}</p>
 
         {!authenticated ? (
           <div className="input-container">
@@ -61,7 +76,7 @@ function App() {
             </button>
           </div>
         ) : (
-          <p className="success-message">Authenticated. Ready to send data to iframe</p>
+          <p className="success-message">Authenticated. Ready to communicate with iframe.</p>
         )}
 
         <iframe
