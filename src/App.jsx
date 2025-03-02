@@ -31,7 +31,7 @@ function App() {
   // Handle messages from iframe
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin !== "http://localhost:5174") return; // Validate origin
+      if (event.origin !== "https://iframe-app-gamma.vercel.app") return; // Validate origin
 
       if (event.data.type === "REQUEST_DATA") {
         console.log("Parent received data request from iframe");
@@ -45,7 +45,7 @@ function App() {
 
   const sendMessageToIframe = () => {
     if (iframeRef.current) {
-      const iframeOrigin = "http://localhost:5174";
+      const iframeOrigin = "https://iframe-app-gamma.vercel.app";
       iframeRef.current.contentWindow.postMessage(
         { type: "DATA_RESPONSE", message: parentMessage },
         iframeOrigin
@@ -81,7 +81,7 @@ function App() {
 
         <iframe
           ref={iframeRef}
-          src="https://iframe-app-gamma.vercel.app/"
+          src="https://iframe-app-gamma.vercel.app"
           className="iframe"
           title="Embedded Iframe"
         />
